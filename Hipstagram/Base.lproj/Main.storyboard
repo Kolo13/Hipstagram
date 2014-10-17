@@ -19,8 +19,10 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo-1" translatesAutoresizingMaskIntoConstraints="NO" id="lB0-DZ-zD1">
                                 <rect key="frame" x="8" y="72" width="584" height="408"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4Xx-ZR-Ir1">
+                                <rect key="frame" x="290" y="194" width="20" height="20"/>
+                            </activityIndicatorView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8og-yq-gCN">
                                 <rect key="frame" x="-8" y="600" width="616" height="100"/>
                                 <constraints>
@@ -72,8 +74,8 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerX" secondItem="4Xx-ZR-Ir1" secondAttribute="centerX" id="6Dl-Cz-HMU"/>
                             <constraint firstAttribute="bottom" secondItem="8og-yq-gCN" secondAttribute="bottom" constant="-100" id="Fan-Ob-7Mt"/>
                             <constraint firstItem="lB0-DZ-zD1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="QHA-9s-yJO"/>
                             <constraint firstAttribute="bottom" secondItem="YYb-P4-swz" secondAttribute="bottom" constant="20" id="Zin-8M-1qp"/>
@@ -82,11 +84,13 @@
                             <constraint firstItem="lB0-DZ-zD1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="8" id="k0n-BQ-MCw"/>
                             <constraint firstAttribute="trailing" secondItem="lB0-DZ-zD1" secondAttribute="trailing" constant="8" id="k1b-ZX-2gJ"/>
                             <constraint firstItem="8og-yq-gCN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="-8" id="l57-lp-cWz"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="4Xx-ZR-Ir1" secondAttribute="bottom" constant="386" id="xZS-sO-jhf"/>
                             <constraint firstAttribute="bottom" secondItem="lB0-DZ-zD1" secondAttribute="bottom" constant="120" id="zKi-SW-aAx"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DBI-Fd-Lt6"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="4Xx-ZR-Ir1" id="2Ie-hu-odh"/>
                         <outlet property="filterCollectionView" destination="8og-yq-gCN" id="ejP-e0-d1Q"/>
                         <outlet property="filterCollectionViewBottomConstrain" destination="Fan-Ob-7Mt" id="g8g-42-rvQ"/>
                         <outlet property="imageView" destination="lB0-DZ-zD1" id="fBA-fF-05U"/>

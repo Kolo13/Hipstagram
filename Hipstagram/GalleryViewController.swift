@@ -17,6 +17,8 @@ class GALLERYViewController: UIViewController, UICollectionViewDelegate, UIColle
 
 var images = [UIImage]()
 var delegate: GalleryDelegate?
+var flowlayout : UICollectionViewFlowLayout!
+
 
   @IBOutlet weak var collectionView: UICollectionView!
   
@@ -37,8 +39,29 @@ var delegate: GalleryDelegate?
       self.images.append(image4!)
       self.images.append(image5!)
 
+      self.flowlayout = self.collectionView.collectionViewLayout as UICollectionViewFlowLayout
         // Do any additional setup after loading the view.
+      
+      var pinch = UIPinchGestureRecognizer(target: self, action: "pinchAction:")
+      self.collectionView.addGestureRecognizer(pinch)
+
     }
+  
+    func pinchAction(pinch : UIPinchGestureRecognizer) {
+      
+      
+      if pinch.state == UIGestureRecognizerState.Ended {
+        println(pinch.velocity)
+        self.collectionView.performBatchUpdates({ () -> Void in
+          if pinch.velocity > 0 {
+            self.flowlayout.itemSize = CGSize(width: self.flowlayout.itemSize.width * 2, height: self.flowlayout.itemSize.height * 2)
+          } else {
+            self.flowlayout.itemSize = CGSize(width: self.flowlayout.itemSize.width * 0.5, height: self.flowlayout.itemSize.height * 0.5)
+          }
+          }, completion: nil )
+      }
+    
+  }
 
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self.images.count

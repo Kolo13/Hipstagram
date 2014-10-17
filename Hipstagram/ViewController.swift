@@ -10,13 +10,13 @@ import UIKit
 import CoreData
 import CoreImage
 
-class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  
+  @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var imageViewBottomConstrain: NSLayoutConstraint!
   @IBOutlet weak var imageViewLeadingConstrain: NSLayoutConstraint!
   @IBOutlet weak var imageViewTrailingConstrain: NSLayoutConstraint!
-  
-  
   
   @IBOutlet weak var filterCollectionView: UICollectionView!
   @IBOutlet weak var filterCollectionViewBottomConstrain: NSLayoutConstraint!
@@ -27,7 +27,6 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
   var imageQueue = NSOperationQueue()
   var thumbnailContainers = [ThumbnailContainer]()
   var gpuContext : CIContext?
-
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,25 +54,6 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     self.filterCollectionView.dataSource = self
   }
   
-  func seedCoreData() {
-    //var newFilter = Filter() //this wont work....have to do like:
-    var sepiaFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
-    sepiaFilter.name = "CISepiaTone"
-    sepiaFilter.favorited = true
-    
-    var gaussianBlurFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
-    gaussianBlurFilter.name = "CIGaussianBlur"
-    gaussianBlurFilter.favorited = true
-    
-    var error : NSError?
-    
-    //saving the context
-    self.managedObjectContext.save(&error)
-    if error != nil {
-      println(error!.localizedDescription)
-    }
-  }
-  
   func enterFilterMode () {
     self.imageViewLeadingConstrain.constant = self.imageViewLeadingConstrain.constant * 2
     self.imageViewTrailingConstrain.constant = self.imageViewTrailingConstrain.constant * 2
@@ -99,16 +79,7 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     
   }
 
-
-//  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//    if segue.identifier == "GALLERY_SEGUE" {
-//      let destinationVC = segue.destinationViewController as GalleryViewController
-//      destinationVC.delegate = self
-//    }
-//    
-//  }
   func resetThumbnails() {
-    
     //first we generate the thumbnail from the image that was selected
     var size = CGSize(width: 100, height: 100)
     UIGraphicsBeginImageContext(size)
@@ -116,13 +87,9 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     self.originalThumbnail = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     
-    
-    
-
-    
     //now we need to setup our thumbnail containers
     var newThumbnailContainers = [ThumbnailContainer]()
-    
+
     for var index = 0; index < self.filters?.count; index++ {
       let filter = self.filters![index]
     
@@ -131,10 +98,9 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
       newThumbnailContainers.append(thumbnailContainer)
     }
     self.thumbnailContainers = newThumbnailContainers
-
-
     self.filterCollectionView.reloadData()
   }
+  
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "GALLERY_SEGUE" {
       let destinationVC = segue.destinationViewController as GALLERYViewController
@@ -142,18 +108,12 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     }
   }
   
-  
-  
-  //drag outlet to PHoto button
-  
   @IBAction func didPushPhotoButton(sender: AnyObject) {
   
     let alertController = UIAlertController(title: "PHOTO", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-    
     let galleryAction = UIAlertAction(title: "GALLERY", style: UIAlertActionStyle.Default) { (action) -> Void in
       self.performSegueWithIdentifier("GALLERY_SEGUE", sender: self)
     }
-      
       
     let cameraAction = UIAlertAction(title: "CAMERA", style: UIAlertActionStyle.Default) { (action) -> Void in
       let imagePicker = UIImagePickerController()
@@ -172,7 +132,7 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
       self.enterFilterMode()
       
     }
-//    
+    
 //    let PHAssetAction = UIAlertAction(title: "PHAsset", style: UIAlertActionStyle.Default) { (action) -> Void in
 //      let newVC = self.storyboard?.instantiateViewControllerWithIdentifier("GALLERY_VC") as GalleryViewController
 //      self.navigationController?.pushViewController(newVC, animated: true)
@@ -184,7 +144,6 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     alertController.addAction(galleryAction)
     alertController.addAction(cameraAction)
     alertController.addAction(filterAction)
-    //
     //alertController.addAction(PHAssetAction)
     
     
@@ -200,25 +159,102 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     let thumbnailContainer = self.thumbnailContainers[indexPath.row]
     if thumbnailContainer.filteredThumbnail != nil {
       cell.filterCell.image = thumbnailContainer.filteredThumbnail
-      println("YYYY")
-    } else {
+    }else{
       cell.filterCell.image = thumbnailContainer.originalThumbnail
       thumbnailContainer.generateThumbnail({ (filteredThumb) -> (Void) in
         if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? FilterCell {
           cell.filterCell.image = filteredThumb
         }
       })
-      
     }
     return cell
   }
   
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    self.activityIndicator.startAnimating()
+
+    
+    self.imageQueue.addOperationWithBlock({ () -> Void in
+          
+      //setting up your filter with a CIImage
+      var image = CIImage(image: self.imageView.image)
+      var imgFilter = CIFilter(name: self.filters![indexPath.row].name)
+      imgFilter.setDefaults()
+      imgFilter.setValue(image, forKey: kCIInputImageKey)
+      
+      //generate the results
+      var result = imgFilter.valueForKey(kCIOutputImageKey) as CIImage
+      var extent = result.extent()
+      var imgRef = self.gpuContext!.createCGImage(result, fromRect: extent)
+
+
+      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+        self.imageView.image = UIImage(CGImage: imgRef)
+        self.activityIndicator.stopAnimating()
+      })
+    })
+  }
+
 
   func didTapOnPicture(image: UIImage) {
     self.imageView.image = image
     self.resetThumbnails()
+    self.filterCollectionView.reloadData()
 
+  }
+  
+  func seedCoreData() {
+    var sepiaFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    sepiaFilter.name = "CISepiaTone"
+    sepiaFilter.favorited = true
 
+    var gaussianBlurFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    gaussianBlurFilter.name = "CIGaussianBlur"
+    gaussianBlurFilter.favorited = true
+    
+    var CIPixellateFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPixellateFilter.name = "CIPixellate"
+    CIPixellateFilter.favorited = true
+    
+    var CIGammaAdjustFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIGammaAdjustFilter.name = "CIGammaAdjust"
+    CIGammaAdjustFilter.favorited = true
+    
+    var CIExposureAdjustFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIExposureAdjustFilter.name = "CIExposureAdjust"
+    CIExposureAdjustFilter.favorited = true
+    
+    var CIPhotoEffectChromeFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPhotoEffectChromeFilter.name = "CIPhotoEffectChrome"
+    CIPhotoEffectChromeFilter.favorited = true
+    
+    var CIPhotoEffectInstantFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPhotoEffectInstantFilter.name = "CIPhotoEffectInstant"
+    CIPhotoEffectInstantFilter.favorited = true
+    
+    var CIPhotoEffectMonoFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPhotoEffectMonoFilter.name = "CIPhotoEffectMono"
+    CIPhotoEffectMonoFilter.favorited = true
+    
+    var CIPhotoEffectNoirFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPhotoEffectNoirFilter.name = "CIPhotoEffectNoir"
+    CIPhotoEffectNoirFilter.favorited = true
+    
+    var CIPhotoEffectTonalFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPhotoEffectTonalFilter.name = "CIPhotoEffectTonal"
+    CIPhotoEffectTonalFilter.favorited = true
+    
+    var CIPhotoEffectTransferFilter = NSEntityDescription.insertNewObjectForEntityForName("Filter", inManagedObjectContext: self.managedObjectContext) as Filter
+    CIPhotoEffectTransferFilter.name = "CIPhotoEffectTransfer"
+    CIPhotoEffectTransferFilter.favorited = true
+    
+    var error : NSError?
+    
+    //saving the context
+    self.managedObjectContext.save(&error)
+    if error != nil {
+      println(error!.localizedDescription)
+    }
   }
 }
 
