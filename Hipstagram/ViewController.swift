@@ -105,9 +105,11 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     if segue.identifier == "GALLERY_SEGUE" {
       let destinationVC = segue.destinationViewController as GALLERYViewController
       destinationVC.delegate = self
-    }else if segue.identifier == "PH_FRAMEWORK_SEGUE"{
-      let photoLibrabyVC = segue.destinationViewController as PhotosFrameworkViewController
-      photoLibrabyVC.delegate = self      
+    }else if segue.identifier == "PH_FRAMEWORK_SEGUE" {
+      let photoLibraryVC = segue.destinationViewController as PhotoFrameworkViewController
+      photoLibraryVC.delegate = self
+      photoLibraryVC.vcCellSize = self.imageView.frame.size
+
     }
   }
   
@@ -140,11 +142,6 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     
     let PHAssetAction = UIAlertAction(title: "PHAsset", style: UIAlertActionStyle.Default) { (action) -> Void in
       self.performSegueWithIdentifier("PH_FRAMEWORK_SEGUE", sender: self)
-
-//      let newVC = self.storyboard?.instantiateViewControllerWithIdentifier("GALLERY_VC") as GalleryViewController
-//      self.navigationController?.pushViewController(newVC, animated: true)
-//
-//      
     }
 
     
