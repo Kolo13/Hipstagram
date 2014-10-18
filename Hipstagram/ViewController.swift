@@ -105,6 +105,9 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     if segue.identifier == "GALLERY_SEGUE" {
       let destinationVC = segue.destinationViewController as GALLERYViewController
       destinationVC.delegate = self
+    }else if segue.identifier == "PH_FRAMEWORK_SEGUE"{
+      let photoLibrabyVC = segue.destinationViewController as PhotosFrameworkViewController
+      photoLibrabyVC.delegate = self      
     }
   }
   
@@ -125,6 +128,8 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
       imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
       imagePicker.delegate = self
       self.presentViewController(imagePicker, animated: true, completion: nil)
+    
+    
     }
       
     let filterAction = UIAlertAction(title: "FILTER", style: UIAlertActionStyle.Default) { (action) -> Void in
@@ -133,18 +138,20 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
       
     }
     
-//    let PHAssetAction = UIAlertAction(title: "PHAsset", style: UIAlertActionStyle.Default) { (action) -> Void in
+    let PHAssetAction = UIAlertAction(title: "PHAsset", style: UIAlertActionStyle.Default) { (action) -> Void in
+      self.performSegueWithIdentifier("PH_FRAMEWORK_SEGUE", sender: self)
+
 //      let newVC = self.storyboard?.instantiateViewControllerWithIdentifier("GALLERY_VC") as GalleryViewController
 //      self.navigationController?.pushViewController(newVC, animated: true)
 //
 //      
-//    }
+    }
 
     
     alertController.addAction(galleryAction)
     alertController.addAction(cameraAction)
     alertController.addAction(filterAction)
-    //alertController.addAction(PHAssetAction)
+    alertController.addAction(PHAssetAction)
     
     
     self.presentViewController(alertController, animated: true, completion: nil)
@@ -195,6 +202,18 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     })
   }
 
+  func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!) {
+    picker.dismissViewControllerAnimated(true, completion: nil)
+    //this gets fired when the image picker is done
+    var editedImage = info[UIImagePickerControllerOriginalImage] as UIImage
+    self.imageView.image = editedImage
+    
+  }
+  
+  func imagePickerControllerDidCancel(picker: UIImagePickerController!) {
+    //this gets fired when the users cancel out of the process
+    picker.dismissViewControllerAnimated(true, completion: nil)
+  }
 
   func didTapOnPicture(image: UIImage) {
     self.imageView.image = image
