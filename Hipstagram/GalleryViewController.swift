@@ -18,15 +18,20 @@ class GALLERYViewController: UIViewController, UICollectionViewDelegate, UIColle
 var images = [UIImage]()
 var delegate: GalleryDelegate?
 var flowlayout : UICollectionViewFlowLayout!
-
+var maxSize: CGSize?
+var minSize: CGSize = CGSize(width: 20, height: 20)
 
   @IBOutlet weak var collectionView: UICollectionView!
   
   
+  
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-      
+      maxSize = self.collectionView.sizeThatFits(self.collectionView.frame.size)
+
+      println(maxSize)
+
       var image1 = UIImage(named: "photo-1.jpg")
       var image2 = UIImage(named: "photo-2.jpg")
       var image3 = UIImage(named: "photo-3.jpg")
@@ -53,13 +58,12 @@ var flowlayout : UICollectionViewFlowLayout!
     if pinch.state == UIGestureRecognizerState.Ended {
       println(pinch.velocity)
       self.collectionView.performBatchUpdates({ () -> Void in
-        if pinch.velocity > 0 {
-          // if self.collectionView.size < CGSize(width: 300, height: 450){ }
-          self.flowlayout.itemSize = CGSize(width: self.flowlayout.itemSize.width * 2, height: self.flowlayout.itemSize.height * 2)
-        } else {
+        if (pinch.velocity > 0) && (self.flowlayout.itemSize.width < self.maxSize?.width) {
+            self.flowlayout.itemSize = CGSize(width: self.flowlayout.itemSize.width * 1.5, height: self.flowlayout.itemSize.height * 1.5)
+        } else if (pinch.velocity < 0) && (self.flowlayout.itemSize.width > self.minSize.width)  {
           self.flowlayout.itemSize = CGSize(width: self.flowlayout.itemSize.width * 0.5, height: self.flowlayout.itemSize.height * 0.5)
         }
-        }, completion: nil )
+      }, completion: nil )
     }
   }
 
