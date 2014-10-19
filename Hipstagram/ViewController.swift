@@ -70,13 +70,10 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     self.imageViewLeadingConstrain.constant = self.imageViewLeadingConstrain.constant / 2
     self.imageViewTrailingConstrain.constant = self.imageViewTrailingConstrain.constant / 2
     self.imageViewBottomConstrain.constant = self.imageViewBottomConstrain.constant / 2
-    
     self.filterCollectionViewBottomConstrain.constant = -100
-    
     UIView.animateWithDuration(0.4, animations: { () -> Void in
       self.view.layoutIfNeeded()
     })
-    
   }
 
   func resetThumbnails() {
@@ -109,7 +106,6 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
       let photoLibraryVC = segue.destinationViewController as PhotoFrameworkViewController
       photoLibraryVC.delegate = self
       photoLibraryVC.vcCellSize = self.imageView.frame.size
-
     }
   }
   
@@ -130,14 +126,11 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
       imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
       imagePicker.delegate = self
       self.presentViewController(imagePicker, animated: true, completion: nil)
-    
-    
     }
       
     let filterAction = UIAlertAction(title: "Filter", style: UIAlertActionStyle.Default) { (action) -> Void in
       self.resetThumbnails()
       self.enterFilterMode()
-      
     }
     
     let PHAssetAction = UIAlertAction(title: "PHAsset", style: UIAlertActionStyle.Default) { (action) -> Void in
@@ -157,7 +150,7 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
 
     
     self.presentViewController(alertController, animated: true, completion: nil)
-  }
+    }
   
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self.thumbnailContainers.count

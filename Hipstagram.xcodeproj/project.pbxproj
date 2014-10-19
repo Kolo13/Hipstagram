@@ -106,12 +106,10 @@
 			isa = PBXGroup;
 			children = (
 				8B077D4D19EED4FC009DADD8 /* AppDelegate.swift */,
+				8B077D5919EED4FC009DADD8 /* LaunchScreen.xib */,
 				8B077D5419EED4FC009DADD8 /* Main.storyboard */,
 				8BAD629F19EF0EA500D95357 /* Controller */,
 				8BAD629E19EF0E9200D95357 /* Model */,
-				8B077D5719EED4FC009DADD8 /* Images.xcassets */,
-				8B077D5919EED4FC009DADD8 /* LaunchScreen.xib */,
-				8B077D4F19EED4FC009DADD8 /* Hipstagram.xcdatamodeld */,
 				8BAD62A019EF0EB100D95357 /* View */,
 				8B077D4B19EED4FC009DADD8 /* Supporting Files */,
 			);
@@ -121,6 +119,7 @@
 		8B077D4B19EED4FC009DADD8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8B077D5719EED4FC009DADD8 /* Images.xcassets */,
 				8BAD62A119EF151800D95357 /* photo-1.jpg */,
 				8BAD62A219EF151800D95357 /* photo-2.jpg */,
 				8BAD62A319EF151800D95357 /* photo-3.jpg */,
@@ -151,7 +150,9 @@
 		8BAD629E19EF0E9200D95357 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8B077D4F19EED4FC009DADD8 /* Hipstagram.xcdatamodeld */,
 				8BAD629419EED63B00D95357 /* Filter.swift */,
+				8BAD629C19EEE80C00D95357 /* ThumbnailContainer.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -161,7 +162,6 @@
 			children = (
 				8B077D5219EED4FC009DADD8 /* ViewController.swift */,
 				8B5934C119F06CA600D68307 /* GALLERYViewController.swift */,
-				8BAD629C19EEE80C00D95357 /* ThumbnailContainer.swift */,
 				8B4EC27319F310BC005C75FA /* PhotoFrameworkViewController.swift */,
 				8B0F6E7819F38B98008ECB26 /* AVFoundationCameraViewController.swift */,
 			);
