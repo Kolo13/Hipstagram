@@ -116,11 +116,11 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
   @IBAction func didPushPhotoButton(sender: AnyObject) {
   
     let alertController = UIAlertController(title: "PHOTO", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-    let galleryAction = UIAlertAction(title: "GALLERY", style: UIAlertActionStyle.Default) { (action) -> Void in
+    let galleryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.Default) { (action) -> Void in
       self.performSegueWithIdentifier("GALLERY_SEGUE", sender: self)
     }
       
-    let cameraAction = UIAlertAction(title: "CAMERA", style: UIAlertActionStyle.Default) { (action) -> Void in
+    let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.Default) { (action) -> Void in
       let imagePicker = UIImagePickerController()
       imagePicker.allowsEditing = true
       
@@ -134,7 +134,7 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     
     }
       
-    let filterAction = UIAlertAction(title: "FILTER", style: UIAlertActionStyle.Default) { (action) -> Void in
+    let filterAction = UIAlertAction(title: "Filter", style: UIAlertActionStyle.Default) { (action) -> Void in
       self.resetThumbnails()
       self.enterFilterMode()
       
@@ -143,13 +143,18 @@ class ViewController: UIViewController, GalleryDelegate, UICollectionViewDataSou
     let PHAssetAction = UIAlertAction(title: "PHAsset", style: UIAlertActionStyle.Default) { (action) -> Void in
       self.performSegueWithIdentifier("PH_FRAMEWORK_SEGUE", sender: self)
     }
+    
+    let avFoundationAction = UIAlertAction(title: "AVFoundation", style: UIAlertActionStyle.Default) { (action) -> Void in
+      self.performSegueWithIdentifier("SHOW_AV", sender: self)
+    }
 
     
     alertController.addAction(galleryAction)
     alertController.addAction(cameraAction)
     alertController.addAction(filterAction)
     alertController.addAction(PHAssetAction)
-    
+    alertController.addAction(avFoundationAction)
+
     
     self.presentViewController(alertController, animated: true, completion: nil)
   }

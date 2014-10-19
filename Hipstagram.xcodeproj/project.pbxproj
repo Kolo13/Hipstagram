@@ -14,6 +14,7 @@
 		8B077D5819EED4FC009DADD8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B077D5719EED4FC009DADD8 /* Images.xcassets */; };
 		8B077D5B19EED4FC009DADD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B077D5919EED4FC009DADD8 /* LaunchScreen.xib */; };
 		8B077D6719EED4FC009DADD8 /* HipstagramTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B077D6619EED4FC009DADD8 /* HipstagramTests.swift */; };
+		8B0F6E7919F38B98008ECB26 /* AVFoundationCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0F6E7819F38B98008ECB26 /* AVFoundationCameraViewController.swift */; };
 		8B4EC26D19F1F40C005C75FA /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EC26C19F1F40C005C75FA /* PHAssetCell.swift */; };
 		8B4EC27419F310BC005C75FA /* PhotoFrameworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EC27319F310BC005C75FA /* PhotoFrameworkViewController.swift */; };
 		8B5934C219F06CA600D68307 /* GALLERYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5934C119F06CA600D68307 /* GALLERYViewController.swift */; };
@@ -50,6 +51,7 @@
 		8B077D6019EED4FC009DADD8 /* HipstagramTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HipstagramTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B077D6519EED4FC009DADD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B077D6619EED4FC009DADD8 /* HipstagramTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HipstagramTests.swift; sourceTree = "<group>"; };
+		8B0F6E7819F38B98008ECB26 /* AVFoundationCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVFoundationCameraViewController.swift; sourceTree = "<group>"; };
 		8B4EC26C19F1F40C005C75FA /* PHAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHAssetCell.swift; sourceTree = "<group>"; };
 		8B4EC27319F310BC005C75FA /* PhotoFrameworkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoFrameworkViewController.swift; path = ../PhotoFrameworkViewController.swift; sourceTree = "<group>"; };
 		8B5934C119F06CA600D68307 /* GALLERYViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GALLERYViewController.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				8B5934C119F06CA600D68307 /* GALLERYViewController.swift */,
 				8BAD629C19EEE80C00D95357 /* ThumbnailContainer.swift */,
 				8B4EC27319F310BC005C75FA /* PhotoFrameworkViewController.swift */,
+				8B0F6E7819F38B98008ECB26 /* AVFoundationCameraViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B0F6E7919F38B98008ECB26 /* AVFoundationCameraViewController.swift in Sources */,
 				8B4EC26D19F1F40C005C75FA /* PHAssetCell.swift in Sources */,
 				8B077D5319EED4FC009DADD8 /* ViewController.swift in Sources */,
 				8BAD62AE19EF307D00D95357 /* FilterCell.swift in Sources */,
